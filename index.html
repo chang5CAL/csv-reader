@@ -3,9 +3,50 @@
 <head>
 	<title></title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-	<script src="js/jquery.csv.min.js"></script>
+	<script src="js/papaparse.js"></script>
 </head>
 <body>
-<input type="file" name="csv" value="" />
+<input id="file" type="file" name="csv" value="" />
+<button id="done">done</button>
 </body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+	<script type="text/javascript">
+
+  </script>
+<script>
+	// set to put it in
+	// once confirm exists, use update to add new fields
+	firebase.database().ref("/Departments/Josh Chang").update({title2: "Josh Chang"}).catch(function(error) {
+		console.log(error.message)
+	});
+
+	$(document).ready(function() {
+		$('#file').change(function (e) {
+			var file = $('#file')[0].files[0];
+			// check if valid file
+			if (file && file.substring(file.name.length - 4) == ".csv") {
+				Papa.parse(file, {
+					complete: function(results) {
+						var data = results.data;
+						console.log(results.data)
+						for (var i = 0; i < data.length; i++) {
+							// todo, what to do in the event if given iproper format		
+							if (data[i].length == 2) {
+								console.log(data[i][0], data[i][1]);
+							}
+						}
+					}
+				});
+			} else {
+				alert("Please upload a valid CSV file.")
+			}
+		});
+
+		$("#done").click(function() {
+
+
+		});
+	});
+</script>
 </html>
